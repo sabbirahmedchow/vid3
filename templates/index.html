@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title%}VID3: Download youtube video and audio.{% endblock %}
+{% block content%}
+
+<form class="col-6 mx-auto card p-3 shadow-lg" hx-post="/check" hx-indicator="#indicator" hx-target='#main' method="post">
+  <h2>VID3 Downloader</h2><hr>
+    <div class="form-group mb-3">
+      <label for="yt-link">Youtube URL</label>
+      <input type="text" class="form-control" required autocomplete="off" name="yt-link" placeholder="Enter Youtube Link">
+      
+    </div>
+    <div class="btn-group mb-3">
+        <button type="submit" class="btn btn-success " name="btn-opt" value="video" _="on click toggle @disabled until htmx:afterOnLoad">Download Video</button>&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-success " name="btn-opt" value="mp3">Convert MP3</button>
+    </div>
+    
+  </form>
+  <p class="confirm">{{msg}}</p>
+  <div id="indicator" class="htmx-indicator">
+    <img src="{{ url_for('static', filename = 'images/loader1.gif') }}"/>
+  </div>
+  
+  {% if title %}
+  <hr>
+  <div class="col-6 mx-auto mb-3">
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Video Thumbnail</th>
+          <th scope="col">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr>
+            <td><img src="{{thumb}}" alt="" height="150" /></td>
+            <td><h5>{{title}}</h5></td>
+          </tr>
+      </tbody>
+    </table>  
+       
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Format</th>
+          <th scope="col">Resolution</th>
+          <th scope="col">Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in reslist %}
+          <tr>
+            <td>{{mime_type[loop.index0]}}</td>
+            <td>{{i}}</td>
+            <td>
+              <form hx-post="/download" hx-target='#main' hx-indicator="#indicator" method="post">
+                   <input type="hidden" name="vid_url" value="{{video}}">
+                   <input type="hidden" name="itag" value="{{reslist[i]}}">
+                   <input type="hidden" name="media_type" value="{{media_type}}">
+                  <button type="submit" class="btn btn-success">Download</button>
+              </form>    
+            </td>
+          </tr>
+        {% endfor %}  
+      </tbody>
+    </table>
+  </div>
+  
+ <br><br>
+  {% endif %}
+  
+  
+ {% endblock %}
