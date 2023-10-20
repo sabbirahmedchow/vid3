@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title%}VID3: Download youtube video and audio.{% endblock %}
+{% block content%}
+<table class="table table-hover">
+    
+    <tbody class="row-md-6">
+        <h2>Download History</h2><br/>
+        {% if not history_list %}
+            <tr><td><h3>No history found.</h3></td></tr>
+        {% else %} 
+            {% for history in history_list %}
+                <tr>
+                    <td><b>{{ loop.index }}.</b> {{history}}</td>         
+                </tr>
+            {% endfor %}
+        {% endif %}    
+    </tbody>
+  </table>
+  {% endblock %}

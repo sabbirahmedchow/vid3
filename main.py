@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from pytube import YouTube  
 import os
 from pathlib import Path
+from history import getHistory, loadHistory
 
 app = Flask(__name__)
 global yt
@@ -61,16 +62,22 @@ def download():
     vid_url = request.form.get("vid_url")
     itag = request.form.get("itag")
     media_type = request.form.get("media_type")
+    media_title = request.form.get("media_title")
     yt = YouTube(vid_url)
     stream = yt.streams.get_by_itag(itag)
     path_to_download = str(os.path.join(Path.home(), 'Downloads'))
     f = stream.download(path_to_download)
     if(media_type == 'audio'):
         base, ext = os.path.splitext(f) 
-        new_file = base + '.mp3'
+        new_file = f"{base}.mp3"
         os.rename(f, new_file) 
-    return render_template('index.html', msg="File downloaded Successfully.")
+    getHistory(media_title, media_type)
+    return render_template('index.html', msg=f'File downloaded Successfully. Check your "{path_to_download}" folder')
 
+
+@app.route("/history")
+def history():
+    return loadHistory()
 
 #@app.route("/mp3_options", methods=['POST', 'GET'])
 @app.route("/check", methods=['POST', 'GET'])

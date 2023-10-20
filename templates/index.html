@@ -10,7 +10,7 @@
       
     </div>
     <div class="btn-group mb-3">
-        <button type="submit" class="btn btn-success " name="btn-opt" value="video" _="on click toggle @disabled until htmx:afterOnLoad">Download Video</button>&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-success " name="btn-opt" value="video">Download Video</button>&nbsp;&nbsp;&nbsp;
         <button type="submit" class="btn btn-success " name="btn-opt" value="mp3">Convert MP3</button>
     </div>
     
@@ -57,6 +57,7 @@
                    <input type="hidden" name="vid_url" value="{{video}}">
                    <input type="hidden" name="itag" value="{{reslist[i]}}">
                    <input type="hidden" name="media_type" value="{{media_type}}">
+                   <input type="hidden" name="media_title" value="{{title}}">
                   <button type="submit" class="btn btn-success">Download</button>
               </form>    
             </td>
